@@ -1,2 +1,2 @@
 # installer
-installation script for raspberry pi
+installation script potnanny greenhouse controller for raspberry pi
