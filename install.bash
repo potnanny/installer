@@ -66,7 +66,7 @@ fi
 crontab -l | grep potnanny
 if [ $? -eq 0 ]
 then
-    (crontab -l; echo '@reboot * * * * source $HOME/.profile; source $HOME/venv/bin/activate; potnanny start 2>&1') | crontab
+    (crontab -l; echo '@reboot bash -c "source $HOME/.profile && source $HOME/venv/bin/activate && potnanny start" 2>&1') | crontab
 fi
 
 
@@ -101,7 +101,7 @@ sudo service nginx restart
 echo "Finishing setup and then reboot! Please be patient..."
 echo ""
 echo "(In 5 minutes, open your web browser and enter the url:"
-echo "https://potnanny.localhost/ to access the application interface)"
+echo "https://potnanny.local to access the application interface)"
 echo ""
 echo "Initial login/password is set to 'admin/potnanny!'"
 
