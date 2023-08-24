@@ -9,12 +9,13 @@
 # The python cryptography package in particular, takes a very long time.
 # On an original 1st gen Raspberry Pi Zero W this may take 2 HOURS, or more.
 
-# version 1.0  02/2023
+# version 1.1   08/14/2023
+# version 1.0   02/02/2023
 #
 
 echo ""
 echo "=============================="
-echo "POTNANNY INSTALLER        v1.0"
+echo "POTNANNY INSTALLER        v1.1"
 echo "=============================="
 echo ""
 
@@ -63,10 +64,19 @@ then
 fi
 
 # install cron, to ensure service runs at startup
-crontab -l | grep potnanny
-if [ $? -eq 0 ]
+crontab -l
+if [ $? -ne 0 ]
 then
-    (crontab -l; echo '@reboot bash -c "source $HOME/.profile && source $HOME/venv/bin/activate && potnanny start" 2>&1') | crontab
+    sudo touch /var/spool/cron/crontabs/$USER
+    sudo chown $USER /var/spool/cron/crontabs/$USER
+    sudo chgrp crontab /var/spool/cron/crontabs/$USER
+    sudo chmod 600 /var/spool/cron/crontabs/$USER
+fi
+
+crontab -l | grep potnanny
+if [ $? -ne 0 ]
+then
+    echo '@reboot bash -c "source $HOME/.profile; source $HOME/venv/bin/activate; potnanny start" 2>&1' | crontab
 fi
 
 
@@ -84,6 +94,8 @@ sudo chmod 640 /etc/ssl/potnanny/private.key
 
 echo "Configuring firewall..."
 echo "------------------------------"
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
 sudo ufw allow 22
 sudo ufw allow 80
 sudo ufw allow 8080
