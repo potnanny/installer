@@ -9,13 +9,14 @@
 # The python cryptography package in particular, takes a very long time.
 # On an original 1st gen Raspberry Pi Zero W this may take 2 HOURS, or more.
 
+# version 1.2   08/24/2023
 # version 1.1   08/14/2023
 # version 1.0   02/02/2023
 #
 
 echo ""
 echo "=============================="
-echo "POTNANNY INSTALLER        v1.1"
+echo "POTNANNY INSTALLER        v1.2"
 echo "=============================="
 echo ""
 
@@ -68,9 +69,9 @@ crontab -l
 if [ $? -ne 0 ]
 then
     sudo touch /var/spool/cron/crontabs/$USER
+    sudo chmod 600 /var/spool/cron/crontabs/$USER
     sudo chown $USER /var/spool/cron/crontabs/$USER
     sudo chgrp crontab /var/spool/cron/crontabs/$USER
-    sudo chmod 600 /var/spool/cron/crontabs/$USER
 fi
 
 crontab -l | grep potnanny
@@ -110,9 +111,14 @@ printf "user www-data;\nworker_processes auto;\npid /run/nginx.pid;\ninclude /et
 sudo service nginx restart
 
 
+echo "Setting hostname..."
+echo "------------------------------"
+sudo hostnamectl set-hostname potnanny
+
+
 echo "Finishing setup and then reboot! Please be patient..."
 echo ""
-echo "(In 5 minutes, open your web browser and enter the url:"
+echo "(In a few minutes, open your web browser and enter the url:"
 echo "https://potnanny.local to access the application interface)"
 echo ""
 echo "Initial login/password is set to 'admin/potnanny!'"
