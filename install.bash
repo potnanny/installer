@@ -4,11 +4,7 @@
 # Install Potnanny application onto Raspberry Pi.
 # This should be run as user 'pi', or another admin/superuser account.
 #
-# PATIENCE!
-# There are a lot of additional packages, and things that need to be compiled.
-# The python cryptography package in particular, takes a very long time.
-# On an original 1st gen Raspberry Pi Zero W this may take 2 HOURS, or more.
-
+# version 1.3   09/26/2023
 # version 1.2   08/24/2023
 # version 1.1   08/14/2023
 # version 1.0   02/02/2023
@@ -16,7 +12,7 @@
 
 echo ""
 echo "=============================="
-echo "POTNANNY INSTALLER        v1.2"
+echo "POTNANNY INSTALLER        v1.3"
 echo "=============================="
 echo ""
 
@@ -24,7 +20,6 @@ echo "Installing requirements..."
 echo "------------------------------"
 sudo apt-get update -y
 sudo apt-get install build-essential libssl-dev python3-dev python3-pip python3-venv sqlite3 git ufw nginx -y
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 sudo pip3 install --upgrade pip
 
 
@@ -54,7 +49,7 @@ git clone https://github.com/potnanny/plugins.git
 
 echo "Installing application..."
 echo "------------------------------"
-bash -c "source '$HOME/.cargo/env'; source $HOME/venv/bin/activate; pip3 install potnanny;"
+bash -c "source $HOME/venv/bin/activate; pip3 install potnanny;"
 
 
 # create local secret key
@@ -124,3 +119,4 @@ echo ""
 echo "Initial login/password is set to 'admin/potnanny!'"
 
 sudo reboot now
+

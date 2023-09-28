@@ -7,8 +7,6 @@ Installation script for the potnanny greenhouse controller for raspberry pi
 - Must be connected to the internet.
 
 ## Usage
-NOTE: The installation script can take a long time (up to 3 hours on the Raspberry Pi Zero W), mostly due to the required Rust language compiler which takes a long time to... compile.
-
 1. Ssh to your raspberry pi from a terminal (Terminal app on Mac and Linux, on Windows I recommend MobaXterm)
 *your existing pi hostname may be different*
 ```
@@ -20,10 +18,6 @@ pi@raspberrypi password: ***********
 2. Download the install script from GitHub
 ```
 [pi@raspberrypi]$ wget https://raw.githubusercontent.com/potnanny/installer/main/install.bash
-
-install.bash        100%[===================>]   3.85K  --.-KB/s    in 0.02s   
-
-2023-08-24 08:00:00 (182 KB/s) - ‘install.bash’ saved [3945/3945]
 [pi@raspberrypi]$
 ```
 
@@ -32,23 +26,7 @@ install.bash        100%[===================>]   3.85K  --.-KB/s    in 0.02s
 [pi@raspberrypi]$ bash ./install.bash
 ```
 
-4. Answer Rust compiler install question
-Enter "1" when the Rust compiler install asks the question:
-```
-Current installation options:
-    default host triple: arm-unknown-linux-gnueabihf
-    default toolchain: stable (default)
-       profile: default
-    modify PATH variable: yes
-
-1) Proceed with installation (default)
-2) Customize installation
-3) Cancel installation
-
->1
-```
-
-5. Answer the webserver self-signed certificate questions.
+4. Answer the webserver self-signed certificate questions.
 Most of these fields can be left blank. However, the following should be populated:
     - Country. Enter your 2 letter country code (like, US) [Wiki List](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
     - Organization Name. Enter Potnanny
