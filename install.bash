@@ -4,6 +4,7 @@
 # Install Potnanny application onto Raspberry Pi.
 # This should be run as user 'pi', or another admin/superuser account.
 #
+# version 1.4   02/10/2023
 # version 1.3   09/26/2023
 # version 1.2   08/24/2023
 # version 1.1   08/14/2023
@@ -12,14 +13,14 @@
 
 echo ""
 echo "=============================="
-echo "POTNANNY INSTALLER        v1.3"
+echo "POTNANNY INSTALLER        v1.4"
 echo "=============================="
 echo ""
 
 echo "Installing requirements..."
 echo "------------------------------"
-sudo apt-get update -y
-sudo apt-get install build-essential libssl-dev python3-dev python3-pip python3-venv sqlite3 git ufw nginx -y
+sudo apt update -y
+sudo apt install build-essential libffi-dev libssl-dev python3-dev python3-pip python3-venv sqlite3 git ufw nginx -y
 sudo pip3 install --upgrade pip
 
 
@@ -30,10 +31,10 @@ sudo usermod -G potnanny -a $USER
 sudo usermod -G bluetooth -a $USER
 
 
-echo "Creating virtualenv..."
-echo "------------------------------"
-cd $HOME
-python3 -m venv venv
+# echo "Creating virtualenv..."
+# echo "------------------------------"
+# cd $HOME
+# python3 -m venv venv
 
 
 echo "Creating user directories..."
@@ -49,7 +50,7 @@ git clone https://github.com/potnanny/plugins.git
 
 echo "Installing application..."
 echo "------------------------------"
-bash -c "source $HOME/venv/bin/activate; pip3 install potnanny;"
+sudo pip3 install potnanny>=0.4.3
 
 
 # create local secret key
@@ -72,7 +73,8 @@ fi
 crontab -l | grep potnanny
 if [ $? -ne 0 ]
 then
-    echo '@reboot bash -c "source $HOME/.profile; source $HOME/venv/bin/activate; potnanny start" 2>&1' | crontab
+    echo '@reboot bash -c "source $HOME/.profile; potnanny start" 2>&1' | crontab
+    # echo '@reboot bash -c "source $HOME/.profile; source $HOME/venv/bin/activate; potnanny start" 2>&1' | crontab
 fi
 
 
@@ -82,7 +84,7 @@ sudo mkdir /etc/ssl/potnanny
 sudo chmod 750 /etc/ssl/potnanny
 sudo chgrp potnanny /etc/ssl/potnanny
 
-sudo openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout /etc/ssl/potnanny/private.key -out /etc/ssl/potnanny/certificate.crt
+sudo openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout /etc/ssl/potnanny/private.key -out /etc/ssl/potnanny/certificate.crt -subj "/C=US/ST=RI/L=Providence/O=Potnanny Local/OU=Development/CN=potnanny.local"
 
 sudo chgrp potnanny /etc/ssl/potnanny/private.key
 sudo chmod 640 /etc/ssl/potnanny/private.key
@@ -119,4 +121,3 @@ echo ""
 echo "Initial login/password is set to 'admin/potnanny!'"
 
 sudo reboot now
-

@@ -2,8 +2,8 @@
 Installation script for the potnanny greenhouse controller for raspberry pi
 
 ## Prerequisites
-- Potnanny requires Python 3.9
-- Raspberry Pi OS, Debian version: 11 (bullseye) or higher is recommended.
+- Potnanny requires Python 3.11
+- Raspberry Pi OS, Debian version: 12 (bookworm) or higher is recommended.
 - Must be connected to the internet.
 
 ## Usage
@@ -38,6 +38,11 @@ Organization Name (eg, company) [Internet Widgits Pty Ltd]: Potnanny
 Organizational Unit Name (eg, section) []:
 Common Name (e.g. server FQDN or YOUR name) []:
 Email Address []:
+```
+
+5. Answer firewall startup question
+```
+Command may disrupt existing ssh connections. Proceed with operation (y|n)? y
 ```
 
 ## Post Install
