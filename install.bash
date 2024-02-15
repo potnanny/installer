@@ -95,8 +95,7 @@ fi
 echo ""
 echo "GENERATING SELF-SIGNED CERTIFICATE..."
 echo "------------------------------"
-sudo ls -l /etc/ssl/potnanny/private.key
-if [ $? -ne 0 ]
+if [ ! -f "/etc/ssl/potnanny/private.key" ]
 then
     sudo mkdir /etc/ssl/potnanny
     sudo chmod 750 /etc/ssl/potnanny
@@ -129,17 +128,17 @@ printf "user www-data;\nworker_processes auto;\npid /run/nginx.pid;\ninclude /et
 
 
 echo ""
-echo "SETTING HOSTNAME..."
+echo "SETTING NEW HOSTNAME..."
 echo "------------------------------"
 sudo hostnamectl set-hostname potnanny
-cat /etc/hosts | grep potnanny
-if [ $? -ne 0 ]
-then
-    sudo echo "127.0.0.1  potnanny" >> /etc/hosts
-fi
+# cat /etc/hosts | grep potnanny
+# if [ $? -ne 0 ]
+# then
+#    sudo echo "127.0.0.1  potnanny" >> /etc/hosts
+#fi
 
 echo ""
-echo "Finishing setup and then reboot! Please be patient..."
+echo "DONE! Finishing setup and then reboot! Please be patient..."
 echo ""
 echo "(In a few minutes, open your web browser and enter the url:"
 echo "https://potnanny.local to access the application user interface)"
