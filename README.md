@@ -36,11 +36,12 @@ After the install is completed, the raspberry pi will reboot. Wait a few minutes
 
 Ensure your bluetooth devices are powered up and located near the Raspberry Pi.
 
-1. Open a web browser on your mobile or laptop, and go to https://potnanny.local (if this does not work, you may need the Raspberry Pi IP address from your wifi router admin page)
-2. Login username = admin, password = potnanny!
-3. Reset the password to something else from the **Account** -> **Change Password** menu
-3. On the main page, press the "+" button to add a new Room
-4. Navigate to **Settings** -> **Devices** -> **Discover New Devices** and answer Yes
-5. Navigate to **Settings** -> **Devices** -> **Device List**
-6. Wait for newly scanned devices to appear on the page. When they do, click on each one and assign it to the room that you created in step 3. click Save.
-7. Click the POTNANNY menu to return to the home page. Room measurements will begin poplulating on the main dashboard page.
+1. Open a web browser on your mobile or laptop, and go to https://potnanny.local (if this address cannot be reached on your wifi network, you may need to use the IP address of the raspberry pi. You will need to get this info from your home wifi router admin page)
+2. Your web browser will alert you to potential certficate problem with the site. Its ok. Accept and continue. (This is just because your local potnanny web server is using a self-signed certificate to encrypt traffic, and this certificate cannot be verified on the internet)
+3. Login username = admin, password = potnanny!
+4. Reset the password to something else from the **Account** -> **Change Password** menu
+5. On the main page, press the "+" button to add a new Room
+6. Navigate to **Settings** -> **Devices** -> **Discover New Devices** and answer Yes
+7. Navigate to **Settings** -> **Devices** -> **Device List**
+8. Wait for newly scanned devices to appear on the page. When they do, click on each one and assign it to the room that you created in step 3. click Save.
+9. Click the POTNANNY menu to return to the home page. Room measurements will begin poplulating on the main dashboard page.
