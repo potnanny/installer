@@ -20,7 +20,7 @@ echo "=============================="
 echo ""
 
 ## check if it is already installed?
-if [ -e "$HOME/venv/bin/potnanny" ]
+if [[ -f "$HOME/venv/bin/potnanny" ]]
 then
     echo "Potnanny is already installed."
     exit 1
@@ -28,16 +28,16 @@ fi
 
 
 # check if an active install is in progress?
-if [ -e "$HOME/nohup.out" ]
+if [[ -f "$HOME/nohup.out" ]]
 then
     secs=$(stat --printf="%Y" "$HOME/nohup.out")
     mins=$((($(date +%s) - ${secs%% *})/60))
-    if [ $mins > 180 ]
+    if [[ $mins > 180 ]]
     then
         rm "$HOME/nohup.out"
     else
         cat "$HOME/nohup.out" | grep "INSTALL COMPLETE"
-        if [ $? -eq 0 ]
+        if [[ $? -eq 0 ]]
         then
             echo "Nothing to do"
             exit 0
@@ -73,7 +73,7 @@ sudo usermod -G bluetooth -a $USER
 
 
 ## create the virtualenv to install app into
-if [ ! -d "$HOME/venv" ]
+if [[ ! -d "$HOME/venv" ]]
 then
     echo ""
     echo "CREATING VIRTUALENV..."
@@ -89,7 +89,7 @@ fi
 
 
 ## set up custom user dirs
-if [ ! -d "$HOME/potnanny" ]
+if [[ ! -d "$HOME/potnanny" ]]
 then
     echo ""
     echo "CREATING USER DIRECTORIES..."
@@ -98,7 +98,7 @@ then
 fi
 
 
-if [ ! -d "$HOME/potnanny/plugins" ]
+if [[ ! -d "$HOME/potnanny/plugins" ]]
 then
     echo ""
     echo "CLONING PLUGIN REPOSITORY..."
@@ -110,7 +110,7 @@ fi
 
 ## set up flask/quart app secret
 cat $HOME/.profile | grep "POTNANNY_SECRET"
-if [ $? -ne 0 ]
+if [[ $? -ne 0 ]]
 then
     echo ""
     echo "CREATING FLASK APP SECRET..."
@@ -121,7 +121,7 @@ fi
 
 ## set up cron job to restart application
 crontab -l
-if [ $? -ne 0 ]
+if [[ $? -ne 0 ]]
 then
     echo ""
     echo "CREATING USER CRON FILE..."
@@ -133,7 +133,7 @@ then
 fi
 
 crontab -l | grep potnanny
-if [ $? -ne 0 ]
+if [[ $? -ne 0 ]]
 then
     echo ""
     echo "ADDING APPLICATION CRON JOB..."
@@ -143,7 +143,7 @@ fi
 
 
 ## self signed cert for web server
-if [ ! -f "/etc/ssl/potnanny/private.key" ]
+if [[ ! -f "/etc/ssl/potnanny/private.key" ]]
 then
     echo ""
     echo "GENERATING SELF-SIGNED CERTIFICATE..."
@@ -161,7 +161,7 @@ fi
 
 # customize nginx https proxy
 cat /etc/nginx/nginx.conf | grep potnanny
-if [ $? -ne 0 ]
+if [[ $? -ne 0 ]]
 then
     echo ""
     echo "CONFIGURING NGINX PROXY..."
@@ -172,7 +172,7 @@ fi
 
 ## set a new hostname
 hostname | grep potnanny
-if [ $? -ne 0 ]
+if [[ $? -ne 0 ]]
 then
     echo ""
     echo "SETTING NEW HOSTNAME..."
@@ -203,7 +203,7 @@ echo "------------------------------"
 echo "This may take up to 1.5 hours... please be patient."
 echo "Device will reboot once finished."
 echo "After reboot, point browser to https://potnanny.local"
-echo "Initial login is 'admin/potnanny!'"
+echo "Initial login/password is 'admin/potnanny!'"
 echo ""
 date
 nohup bash -c "source $HOME/venv/bin/activate && pip install potnanny && echo 'INSTALL COMPLETE' && date && sudo reboot now"
