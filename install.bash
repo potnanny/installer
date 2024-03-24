@@ -42,7 +42,7 @@ then
             echo "Nothing to do"
             exit 0
         else
-            echo "Install still in progress. If you want to follow the install, use command:"
+            echo "Install still in progress. If you want to monitor the install log, use command:"
             echo " tail -f $HOME/nohup.out"
             exit 1
         fi
