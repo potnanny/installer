@@ -4,6 +4,8 @@
 # Install Potnanny application onto Raspberry Pi.
 # This should be run as user 'pi', or another admin/superuser account.
 #
+# version 1.7   05/17/2024
+# version 1.6   04/24/2024
 # version 1.5   03/03/2024
 # version 1.4   02/10/2024
 # version 1.3   09/26/2023
@@ -15,7 +17,7 @@
 
 echo ""
 echo "=============================="
-echo "POTNANNY INSTALLER        v1.5"
+echo "POTNANNY INSTALLER        v1.7"
 echo "=============================="
 echo ""
 
@@ -57,6 +59,7 @@ echo "------------------------------"
 touch $HOME/nohup.out
 sudo apt update -y
 
+
 echo ""
 echo "INSTALLING REQUIREMENTS..."
 echo "------------------------------"
@@ -80,11 +83,22 @@ then
     echo "------------------------------"
     cd $HOME
     python3 -m venv venv
-    if [ $? -ne 0 ]
+    if [[ $? -ne 0 ]]
     then
         echo "FATAL: PYTHON VIRTUALENV CREATION FAILURE!"
         exit 1
     fi
+fi
+
+
+## download the db repair script
+if [[ ! -f "$HOME/repair.bash" ]]
+then
+    echo ""
+    echo "DOWNLOADING REPAIR TOOLS..."
+    echo "------------------------------"
+    cd $HOME
+    wget https://raw.githubusercontent.com/potnanny/repair/main/repair.bash
 fi
 
 
@@ -136,9 +150,11 @@ crontab -l | grep potnanny
 if [[ $? -ne 0 ]]
 then
     echo ""
-    echo "ADDING APPLICATION CRON JOB..."
+    echo "ADDING APPLICATION CRON JOBS..."
     echo "------------------------------"
-    echo '@reboot bash -c "source $HOME/.profile; source $HOME/venv/bin/activate; potnanny start" 2>&1' | crontab
+    echo '@reboot bash -c "source $HOME/.profile; source $HOME/venv/bin/activate; potnanny start" >/dev/null 2>&1' | crontab
+    echo '*/15 * * * * bash -c "source $HOME/.profile; source $HOME/venv/bin/activate; potnanny status || potnanny start" >/dev/null 2>&1' | crontab
+    echo '*/16 * * * * grep -i "database is locked" $HOME/potnanny/errors.log && bash $HOME/repair.bash" >/dev/null 2>&1' | crontab
 fi
 
 
@@ -200,7 +216,7 @@ cd $HOME
 echo ""
 echo "INSTALLING APPLICATION..."
 echo "------------------------------"
-echo "This may take up to 1.5 hours... please be patient."
+echo "This may take up to 2 hours... please be patient."
 echo "Device will reboot once finished."
 echo "After reboot, point browser to https://potnanny.local"
 echo "Initial login/password is 'admin/potnanny!'"

@@ -28,7 +28,7 @@ You are now connected and logged into the raspberry pi!
 ```
 
 Get a cup of coffee, go for a walk, watch some TV, something...
-*There is a lot of software that needs to be downloaded, updated, and compiled during the install. This can take up to 1.5 hours on low-horsepower devices like the Raspberry Pi Zero W. Please be patient.*
+*There is a lot of software that needs to be downloaded, updated, and compiled during the install. This can take up to 1.5 hours on low-power devices like the Raspberry Pi Zero W. Please be patient.*
 
 
 ## Post Install
