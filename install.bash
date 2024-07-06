@@ -21,6 +21,7 @@ echo "POTNANNY INSTALLER        v1.7"
 echo "=============================="
 echo ""
 
+
 ## check if it is already installed?
 if [[ -f "$HOME/venv/bin/potnanny" ]]
 then
@@ -123,13 +124,15 @@ fi
 
 
 ## set up flask/quart app secret
-cat $HOME/.profile | grep "POTNANNY_SECRET"
+cat $HOME/.profile | grep "SECRET"
 if [[ $? -ne 0 ]]
 then
     echo ""
     echo "CREATING FLASK APP SECRET..."
     echo "------------------------------"
-    echo "export POTNANNY_SECRET=`LC_ALL=C tr -dc A-Za-z0-9 </dev/urandom | head -c 24`" >> $HOME/.profile
+    echo "export FLASK_SECRET=`LC_ALL=C tr -dc A-Za-z0-9 </dev/urandom | head -c 32`" >> $HOME/.profile
+    echo "export POTNANNY_SECRET=`LC_ALL=C tr -dc A-Za-z0-9 </dev/urandom | head -c 32`" >> $HOME/.profile
+
 fi
 
 
@@ -152,9 +155,9 @@ then
     echo ""
     echo "ADDING APPLICATION CRON JOBS..."
     echo "------------------------------"
-    echo '@reboot bash -c "source $HOME/.profile; source $HOME/venv/bin/activate; potnanny start" >/dev/null 2>&1' | crontab
-    echo '*/15 * * * * bash -c "source $HOME/.profile; source $HOME/venv/bin/activate; potnanny status || potnanny start" >/dev/null 2>&1' | crontab
-    echo '*/16 * * * * grep -i "database is locked" $HOME/potnanny/errors.log && bash $HOME/repair.bash" >/dev/null 2>&1' | crontab
+    printf '@reboot bash -c "source $HOME/.profile; source $HOME/venv/bin/activate; potnanny start" >/dev/null 2>&1\n' | crontab
+    printf '*/15 * * * * bash -c "source $HOME/.profile; source $HOME/venv/bin/activate; potnanny status || potnanny start" >/dev/null 2>&1\n' | crontab
+    printf '*/16 * * * * grep -i "database is locked" $HOME/potnanny/errors.log && bash $HOME/repair.bash" >/dev/null 2>&1\n' | crontab
 fi
 
 
