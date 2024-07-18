@@ -4,6 +4,7 @@
 # Install Potnanny application onto Raspberry Pi.
 # This should be run as user 'pi', or another admin/superuser account.
 #
+# version 1.8   07/18/2024
 # version 1.7   05/17/2024
 # version 1.6   04/24/2024
 # version 1.5   03/03/2024
@@ -17,7 +18,7 @@
 
 echo ""
 echo "=============================="
-echo "POTNANNY INSTALLER        v1.7"
+echo "POTNANNY INSTALLER        v1.8"
 echo "=============================="
 echo ""
 
@@ -155,9 +156,11 @@ then
     echo ""
     echo "ADDING APPLICATION CRON JOBS..."
     echo "------------------------------"
-    printf '@reboot bash -c "source $HOME/.profile; source $HOME/venv/bin/activate; potnanny start" >/dev/null 2>&1\n' | crontab
-    printf '*/15 * * * * bash -c "source $HOME/.profile; source $HOME/venv/bin/activate; potnanny status || potnanny start" >/dev/null 2>&1\n' | crontab
-    printf '*/16 * * * * grep -i "database is locked" $HOME/potnanny/errors.log && bash $HOME/repair.bash" >/dev/null 2>&1\n' | crontab
+    printf '@reboot bash -c "source $HOME/.profile; source $HOME/venv/bin/activate; potnanny start" >/dev/null 2>&1\n\n*/15 * * * * bash -c "source $HOME/.profile; source $HOME/venv/bin/activate; potnanny status || potnanny start\n\n*/16 * * * * grep -i "database is locked" $HOME/potnanny/errors.log && bash $HOME/repair.bash" >/dev/null 2>&1\n' | crontab
+
+    # printf '*/15 * * * * bash -c "source $HOME/.profile; source $HOME/venv/bin/activate; potnanny status || potnanny start" >/dev/null 2>&1\n' | sudo tee -a /var/spool/cron/crontabs/$USER
+
+    # printf '*/16 * * * * grep -i "database is locked" $HOME/potnanny/errors.log && bash $HOME/repair.bash" >/dev/null 2>&1\n' | sudo tee -a /var/spool/cron/crontabs/$USER
 fi
 
 
@@ -165,7 +168,7 @@ fi
 if [[ ! -f "/etc/ssl/potnanny/private.key" ]]
 then
     echo ""
-    echo "GENERATING SELF-SIGNED CERTIFICATE..."
+    echo "GENERATING SELF-SIGNED CERT..."
     echo "------------------------------"
     sudo mkdir /etc/ssl/potnanny
     sudo chmod 750 /etc/ssl/potnanny
