@@ -4,6 +4,7 @@
 # Install Potnanny application onto Raspberry Pi.
 # This should be run as user 'pi', or another admin/superuser account.
 #
+# version 1.9   08/27/2024    added rust install & custom cryptogaphy build
 # version 1.8   07/18/2024
 # version 1.7   05/17/2024
 # version 1.6   04/24/2024
@@ -18,7 +19,7 @@
 
 echo ""
 echo "=============================="
-echo "POTNANNY INSTALLER        v1.8"
+echo "POTNANNY INSTALLER        v1.9"
 echo "=============================="
 echo ""
 
@@ -66,6 +67,10 @@ echo ""
 echo "INSTALLING REQUIREMENTS..."
 echo "------------------------------"
 sudo apt install build-essential libffi-dev libssl-dev python3-dev python3-pip python3-venv sqlite3 git ufw nginx -y
+
+# install rust, for python cryptography build later
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+. "$HOME/.cargo/env"
 
 
 ## create custom groups and assign to user
@@ -228,4 +233,4 @@ echo "After reboot, point browser to https://potnanny.local"
 echo "Initial login/password is 'admin/potnanny!'"
 echo ""
 date
-nohup bash -c "source $HOME/venv/bin/activate && pip install potnanny && echo 'INSTALL COMPLETE' && date && sudo reboot now"
+nohup bash -c "source $HOME/venv/bin/activate && pip install cryptography --no-binary cryptography && pip install potnanny && echo 'INSTALL COMPLETE' && date && sudo reboot now"
